@@ -5,17 +5,17 @@
             "label": "Build SFML App",
             "type": "shell",
             "command": "clang++",
-"args": [
-    "-std=c++17",
-    "*.cpp",
-    "-o",
-    "main",
-    "-I/opt/homebrew/opt/sfml@2/include",
-    "-L/opt/homebrew/opt/sfml@2/lib",
-    "-lsfml-graphics",
-    "-lsfml-window",
-    "-lsfml-system"
-]    ,
+            "args": [
+                "-std=c++17",
+                "${file}",   // Compile the currently open file
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}", // Output file has same name as source file
+                "-I/opt/homebrew/opt/sfml@2/include",
+                "-L/opt/homebrew/opt/sfml@2/lib",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system"
+            ],
             "group": "build",
             "problemMatcher": ["$gcc"]
         },
