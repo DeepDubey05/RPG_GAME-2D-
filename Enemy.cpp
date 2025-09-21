@@ -3,7 +3,12 @@
 
 void Enemy::initialize(){
 
+    enemyBoundingRectangle.setFillColor(sf::Color::Transparent);
+    enemyBoundingRectangle.setOutlineColor(sf::Color::Green);
+    enemyBoundingRectangle.setOutlineThickness(1.00f);
 
+    enemySize.x = 64,
+    enemySize.y = 64;
 }
 
 void Enemy::load(){
@@ -19,24 +24,26 @@ void Enemy::load(){
         int xIndex = 0;
         int yIndex = 1;
 
-        Sprite.setTextureRect(sf::IntRect(xIndex * 64, yIndex * 64, 64, 64));
+        Sprite.setTextureRect(sf::IntRect(xIndex * enemySize.x, yIndex * enemySize.y, enemySize.x, enemySize.y));
         Sprite.setScale(sf::Vector2f(1.1f, 1.1f));
+        enemyBoundingRectangle.setSize(sf::Vector2f(enemySize.x * enemyBoundingRectangle.getScale().x,enemySize.y * enemyBoundingRectangle.getScale().y));
     }
     else
     {
         std::cout << " Load unsuccessful!" << std::endl;
     }
 
-
 }
 
-void Enemy::update(){
+void Enemy::update(float deltaTime){
 
+    enemyBoundingRectangle.setPosition(Sprite.getPosition());
 
 }
 
 void Enemy::draw(sf::RenderWindow &window){
 
+    window.draw(enemyBoundingRectangle);
     window.draw(Sprite);
 
 }

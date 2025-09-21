@@ -5,6 +5,12 @@
 
 void Player::Initialize()
 {
+    boundingRectangle.setFillColor(sf::Color::Transparent);
+    boundingRectangle.setOutlineThickness(1.00f);
+    boundingRectangle.setOutlineColor(sf::Color::Red);
+
+    
+    size = sf::Vector2i(64,64);
 }
 
 void Player::Load()
@@ -20,8 +26,11 @@ void Player::Load()
         int xIndex = 0;
         int yIndex = 1;
 
-        Sprite.setTextureRect(sf::IntRect(xIndex * 64, yIndex * 64, 64, 64));
-        Sprite.setScale(sf::Vector2f(1.1f, 1.1f));
+        Sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
+                Sprite.setScale(sf::Vector2f(1.1f, 1.1f));
+
+    boundingRectangle.setSize(sf::Vector2f(size.x* Sprite.getScale().x,size.y * Sprite.getScale().y));
+
     }
     else
     {
@@ -29,33 +38,33 @@ void Player::Load()
     }
 }
 
-void Player::Update(Enemy &enemy)
+void Player::Update(float deltaTime,Enemy &enemy)
 {
         sf::Vector2f Position = Sprite.getPosition();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            Sprite.setPosition(Position + sf::Vector2f(3.00f, 0.00f));
+            Sprite.setPosition(Position + sf::Vector2f(0.25f, 0.00f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            Sprite.setPosition(Position + sf::Vector2f(-3.00f, 0.00f));
+            Sprite.setPosition(Position + sf::Vector2f(-0.25f, 0.00f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            Sprite.setPosition(Position + sf::Vector2f(0.00f, 3.00f));
+            Sprite.setPosition(Position + sf::Vector2f(0.00f, 0.25f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            Sprite.setPosition(Position + sf::Vector2f(0.00f, -3.00f));
+            Sprite.setPosition(Position + sf::Vector2f(0.00f, -0.25f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-            Sprite.setPosition(Position + sf::Vector2f(3.00f, -3.00f));
+            Sprite.setPosition(Position + sf::Vector2f(0.25f, -0.25f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-            Sprite.setPosition(Position + sf::Vector2f(-3.00f, -3.00f));
+            Sprite.setPosition(Position + sf::Vector2f(-0.25f, -0.25f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-            Sprite.setPosition(Position + sf::Vector2f(3.00f, 3.00f));
+            Sprite.setPosition(Position + sf::Vector2f(0.25f, 0.25f) * playerSpeed * deltaTime);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-            Sprite.setPosition(Position + sf::Vector2f(-3.00f, 3.00f));
+            Sprite.setPosition(Position + sf::Vector2f(-0.25f, 0.25f) * playerSpeed * deltaTime);
 
                         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
@@ -75,7 +84,12 @@ void Player::Update(Enemy &enemy)
 
             direction = Math:: VectorNormalized(direction);
 
-            bullets[i].setPosition(bullets[i].getPosition() + direction * bulletSpeed);
+            bullets[i].setPosition(bullets[i].getPosition() + direction * bulletSpeed * deltaTime);
+        }
+        boundingRectangle.setPosition(Sprite.getPosition());
+
+        if(Math::CheckRectCollision(Sprite.getGlobalBounds(),enemy.Sprite.getGlobalBounds())){
+            std::cout<<"Colllison detected!"<<std::endl;
         }
 }
 
@@ -86,5 +100,6 @@ void Player::Draw(sf::RenderWindow &window)
             window.draw(bullets[i]);
         }
 
+    window.draw(boundingRectangle);
     window.draw(Sprite);
 }

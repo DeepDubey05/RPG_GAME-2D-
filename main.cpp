@@ -6,6 +6,9 @@
 
 int main()
 {
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
     Player player;
     Enemy enemy;
     //-------------------------------------INITIALIZATION----------------------------
@@ -24,9 +27,12 @@ int main()
 
     //------------------------------------LOAD------------------------------
 
+    sf::Clock clock;
+
     while (window.isOpen())
     {
-
+        sf::Time deltaTimeTimer = clock.restart();
+       float deltaTime = deltaTimeTimer.asMilliseconds();
         sf::Event event;
 
         while (window.pollEvent(event))
@@ -34,11 +40,11 @@ int main()
 
             if (event.type == sf::Event::Closed)
                 window.close();
-        }
+        }        
         //-------------------------------------UPDATE----------------------------
 
-        player.Update(enemy);
-        enemy.update();
+        enemy.update(deltaTime);
+        player.Update(deltaTime,enemy);
 
         //-------------------------------------UPDATE----------------------------
 

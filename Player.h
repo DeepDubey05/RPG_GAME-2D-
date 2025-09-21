@@ -9,7 +9,11 @@ private :
 
     sf::Texture Texture;
         std::vector<sf::RectangleShape> bullets;
-    float bulletSpeed = 2.5f;
+    float bulletSpeed = 0.5f;
+    float playerSpeed = 2.00f;
+    sf::RectangleShape boundingRectangle;
+
+    sf::Vector2i size;
 
 public:
     sf::Sprite Sprite;
@@ -17,6 +21,6 @@ public:
 public:
     void Initialize();
     void Load();
-    void Update(Enemy &enemy);
+    void Update(float deltaTime,Enemy &enemy);
     void Draw(sf::RenderWindow &window);
 };
